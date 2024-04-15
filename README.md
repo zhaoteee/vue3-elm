@@ -29,5 +29,6 @@
     "build": "vue-cli-service build"
    ```
 5. 新建 `vue.config.js` 文件配置目录别名alias
-6. 后续需对各个页面进行vue3语法改造
+6. 改造了home login两个页面，需要改动的只有data里的数据改成ref，引入computed，然后是路由跳转修改，vuex调用方式有改动，
+   其他没啥大变化，改动意义不大。
 
