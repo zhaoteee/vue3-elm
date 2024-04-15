@@ -40,61 +40,42 @@
     </div>
 </template>
 
-<script>
+<script setup>
 import headTop from '../../components/header/head'
-import {cityGuess, hotcity, groupcity} from '../../service/getData'
+import {cityGuess as getCityGuess, hotcity as getHotcity, groupcity as getGroupcity} from '../../service/getData'
+import { ref, computed } from 'vue'
+const guessCity = ref('') //当前城市
+const guessCityid = ref('') //当前城市id
+const hotcity = ref([]) //热门城市列表
+const groupcity = ref({}) //所有城市列表
+ // 获取当前城市
+ getCityGuess().then(res => {
+    guessCity.value = res.name;
+    guessCityid.value = res.id;
+})
 
-export default {
-    data(){
-        return{
-            guessCity: '',   //当前城市
-            guessCityid: '', //当前城市id
-            hotcity: [],     //热门城市列表
-            groupcity: {},   //所有城市列表
+//获取热门城市
+getHotcity().then(res => {
+    hotcity.value = res;
+})
+
+//获取所有城市
+getGroupcity().then(res => {
+    groupcity.value = res;
+})
+//将获取的数据按照A-Z字母开头排序
+const sortgroupcity = computed(() =>{
+    let sortobj = {};
+    for (let i = 65; i <= 90; i++) {
+        if (groupcity.value[String.fromCharCode(i)]) {
+            sortobj[String.fromCharCode(i)] = groupcity.value[String.fromCharCode(i)];
         }
-    },
-
-	mounted(){
-	    // 获取当前城市
-	    cityGuess().then(res => {
-	        this.guessCity = res.name;
-	        this.guessCityid = res.id;
-	    })
-
-	    //获取热门城市
-	    hotcity().then(res => {
-	        this.hotcity = res;
-	    })
-
-	    //获取所有城市
-	    groupcity().then(res => {
-	        this.groupcity = res;
-	    })
-	},
-
-	components:{
-	    headTop
-	},
-
-	computed:{
-	    //将获取的数据按照A-Z字母开头排序
-	    sortgroupcity(){
-	        let sortobj = {};
-	        for (let i = 65; i <= 90; i++) {
-	            if (this.groupcity[String.fromCharCode(i)]) {
-	                sortobj[String.fromCharCode(i)] = this.groupcity[String.fromCharCode(i)];
-	            }
-	        }
-	        return sortobj
-	    }
-	},
-
-	methods:{
-	    //点击图标刷新页面
-	    reload(){
-	        window.location.reload();
-	    }
-	},
+    }
+    return sortobj
+})
+//点击图标刷新页面
+function reload(){
+    window.location.reload();
 }
 
 </script>
