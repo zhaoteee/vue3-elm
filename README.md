@@ -32,3 +32,11 @@
 6. 改造了home login两个页面，需要改动的只有data里的数据改成ref，引入computed，然后是路由跳转修改，vuex调用方式有改动，
    其他没啥大变化，改动意义不大。
 
+## 打包优化
+1. 安装speed-measure-webpack-plugin插件 查看打包构建耗时
+2. 安装webpack-bundle-analyzer 分析打包后文件大小分布
+3. 安装thread-loader 打包时开启多线程，未见明显提升，在打包比较耗时的可能明显点
+4. 构建开启parallel，打包时间由17,756 ms->5,511 ms
+5. 开启构建缓存，打包时间 5,265 ms-> 961 ms
+
+
